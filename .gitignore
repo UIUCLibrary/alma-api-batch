@@ -7,3 +7,5 @@
 /spec/reports/
 /tmp/
 *~
+/config/
+alma.yml
