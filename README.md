@@ -8,19 +8,6 @@ Since the rate limits are applied at the institution level and not at api key le
 
 See development for now
 
-#Add this line to your application's Gemfile:
-##
-#```ruby
-#gem 'alma_api'
-#```
-#
-#And then execute:
-#
-#    $ bundle install
-#
-#Or install it yourself as:
-#
-#    $ gem install alma_api
 
 ## Usage
 
