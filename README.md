@@ -11,9 +11,13 @@ See development for now
 
 ## Usage
 
-You'll need a yaml file with configuration information that is used to set up the Api keys and the alma instance you want to connect to.
+api\_caller = AlmaApi::Batch::ApiCaller.new( 'alma\_api\_key' )
 
-See [Alma's API Overiew: Calling Alma APIs]( https://developers.exlibrisgroup.com/alma/apis/#calling ) for details on hostname.
+uri = URI( 'https://foo/user/1' )
+request = Net::HTTP::Get.new( uri )
+user_response = api.call(uri, request)
+
+
 
 The key needs to be a key that has at least read permissions for whatever api you're going to try calling. The module right now doesn't necessarily check though.
 
@@ -45,6 +49,10 @@ Bug reports and pull requests are welcome.
 ## TODOS
 
   * Add this gem to github, point to it in docs.
+  * Add some higher-level functionality based on existing scripts usage of api calls
+  * Have host be part of setup - See [Alma's API Overiew: Calling Alma APIs]( https://developers.exlibrisgroup.com/alma/apis/#calling ) for details on hostname.
+
+
   
   
 
