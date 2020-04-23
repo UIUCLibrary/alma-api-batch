@@ -3,7 +3,6 @@ module AlmaApi
 
     require 'limiter'
     require 'nokogiri'
-    require 'yaml'
     
     # adding a gem just to track time and limit calls might
     # be overkill, can probably implement ourselves directly...
@@ -14,9 +13,9 @@ module AlmaApi
       limit_method :call, rate: 19, interval: 1
       
 
-      def initialize(config_file = 'alma.yml')
-        # probably should do something more rails like ...but for now... 
-        @config = YAML::load_file( config_file )
+      
+      def initialize(key)
+        @config = { api_key: key }
       end
       
       def sleep_till_midnight
@@ -68,7 +67,7 @@ module AlmaApi
         while throttled_result do
           
           #header neeeds to be Authorization: apikey {APIKEY}
-          request['Authorization'] = 'apikey ' + @config['api_key']
+          request['Authorization'] = 'apikey ' + @config[:api_key]
           
           response = Net::HTTP.start(url.hostname,
                                      url.port,

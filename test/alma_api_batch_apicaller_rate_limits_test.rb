@@ -6,9 +6,11 @@ require 'webmock/test_unit'
 require 'alma_api/batch'
 require 'uri'
 require 'timeout'
-class TestAlmaBatchAPI < Test::Unit::TestCase
+class TestAlmaBatchAPIRateLimits < Test::Unit::TestCase
 
 
+  #TODO: convert to minitest
+  
   # TODO: refactor out common code in to a test method so
   # we just setup webmock and the expected timing results (maybe return times as array of int)
 
@@ -19,8 +21,8 @@ class TestAlmaBatchAPI < Test::Unit::TestCase
     # this is complete guess work,
     # but will test 30 times and if 29 get done in less
     # than a second, the rest of the tests are reasonable
-    
-    api = AlmaApi::Batch::ApiCaller.new( __dir__ + '/../config/alma.yml' )
+
+    api = AlmaApi::Batch::ApiCaller.new( 'fakekey' )
     
 
     mock_responses = (1..30).map { | position | { body: "<user><primary_id>#{position.to_s }</primary_id></user>" } }
@@ -54,7 +56,7 @@ class TestAlmaBatchAPI < Test::Unit::TestCase
   
   def test_pauses_after_per_second_warning
     
-    api = AlmaApi::Batch::ApiCaller.new(  __dir__ + '/../config/alma.yml'  )
+    api = AlmaApi::Batch::ApiCaller.new( 'fakekey'  )
 
     # if we time out every five, we'll need to make sure we have 31, because WebMock repeats the last request
     # feels like better way to do this...
@@ -101,7 +103,7 @@ class TestAlmaBatchAPI < Test::Unit::TestCase
   # we should avoid hitting the threshold if we can without warnings from Alma..
   def test_pauses_after_too_many_request_per_second
 
-    api = AlmaApi::Batch::ApiCaller.new(  __dir__ + '/../config/alma.yml'  )
+    api = AlmaApi::Batch::ApiCaller.new( 'fakekey'  )
 
     # if we time out every five, we'll need to make sure we have 31, because WebMock repeats the last request
     # feels like better way to do this...
@@ -142,7 +144,7 @@ class TestAlmaBatchAPI < Test::Unit::TestCase
   
   def test_pauses_after_receiving_daily_threshold
 
-    api = AlmaApi::Batch::ApiCaller.new( __dir__ + '/../config/alma.yml' )
+    api = AlmaApi::Batch::ApiCaller.new( 'fakekey' )
 
     # if we time out every five, we'll need to make sure we have 31, because WebMock repeats the last request
     # feels like better way to do this...
