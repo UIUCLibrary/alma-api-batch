@@ -15,6 +15,9 @@ api\_caller = AlmaApi::Batch::ApiCaller.new( 'alma\_api\_key' )
 
 uri = URI( 'https://foo/user/1' )
 request = Net::HTTP::Get.new( uri )
+
+... this is where you'd set up a POST or get according to the api specs, depending on what you want to do
+
 user_response = api.call(uri, request)
 
 
