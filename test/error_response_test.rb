@@ -44,7 +44,7 @@ EOXML
 
   def test_error_response_returns_true_when_error
     
-    assert(!AlmaApi::ErrorResponse.error_response?( @error_xml ), "Should be considered an error response")
+    assert(AlmaApi::ErrorResponse.error_response?( @error_xml ), "Should be considered an error response")
   end
 
 
@@ -67,11 +67,11 @@ EOXML
     assert_equal(expected_error_list.size, actual_error_list.size, "Sizes of expected array and actual array should be the same")
 
     error_entry_index = 0
-    while( error_entry_index < expected_results.size)
+    while( error_entry_index < expected_error_list.size)
 
-      assert_equals(expected_error_list[error_entry_index][:code],actual_error_list[error_entry_index][:code] )
-      assert_equals(expected_error_list[error_entry_index][:message],actual_error_list[error_entry_index][:message] )
-      assert_equals(expected_error_list[error_entry_index][:tracking_id],actual_error_list[error_entry_index][:tracking_id] )
+      assert_equal(expected_error_list[error_entry_index][:code],actual_error_list[error_entry_index][:code] )
+      assert_equal(expected_error_list[error_entry_index][:message],actual_error_list[error_entry_index][:message] )
+      assert_equal(expected_error_list[error_entry_index][:tracking_id],actual_error_list[error_entry_index][:tracking_id] )
       
       error_entry_index += 1
     end
