@@ -13,9 +13,12 @@ module AlmaApi
       limit_method :call, rate: 19, interval: 1
       
 
+
+      # do we want to make it an option hash?
       
-      def initialize(key)
-        @config = { api_key: key }
+      def initialize(host, key)
+        @config = { host: host,
+                    api_key: key }
       end
       
       def sleep_till_midnight
