@@ -118,6 +118,74 @@ module AlmaApi
         #       puts "Ok, got a response that wasn't throttled, going to return that"
         response
       end
+
+
+      def _uri( endpoint, query_options )
+        
+        # should we worry about double-escaping here?
+        
+        uri = "https://#{@config[:host]}/#{endpoint}"
+        
+        # At some point need to research how alma tends to handle "array" of options...
+        # and possibly do someting smart here
+        unless query_options.empty?
+          query = query_options.
+                    map{ |key,value| "#{key}=#{value}" }.
+                    join("&")
+          uri += "?#{query}"
+        end
+        
+        URI( URI.escape( uri ) )
+      end
+      
+      def get(endpoint, query_options = {})
+        uri = _uri( endpoint, query_options)
+        request = Net::HTTP::Get.new( uri )
+
+
+        call( uri , request )
+      end
+
+
+      # we could probably refactor some of this w/ put and get,
+      # have most of it be teh same, but jus the final call to Net::HTTP::x 
+      def post(endpoint, body, query_options = {})
+        
+        
+        # should we worry about double-escaping here?
+        
+        uri = _uri( endpoint, query_options )
+        
+        request = Net::HTTP::Post.new( uri ) 
+        
+        request.body         = body 
+        request.content_type = 'application/xml' 
+        
+        call(uri, request)
+        
+        
+      end
+      
+      
+      def put(endpoint, body, query_options = {})
+
+        
+        # should we worry about double-escaping here?
+        
+        uri = _uri( endpoint, query_options )
+        
+        request = Net::HTTP::Put.new( uri ) 
+        
+        request.body         = body 
+        request.content_type = 'application/xml' 
+        
+        call(uri, request)
+        
+        
+      end
+
+
     end
+
   end
 end
