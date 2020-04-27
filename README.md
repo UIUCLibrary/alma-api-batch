@@ -11,27 +11,59 @@ See development for now
 
 ## Usage
 
-api\_caller = AlmaApi::Batch::ApiCaller.new( 'alma\_api\_key' )
+First, construct the caller object. This takes care of rate-limiting concners, both throttling and retrying the call if a response comes back that the threshold was exceeded. (Thresholds are per-institution, not api key, so even if everyone is being responsible they can still happen).
 
-uri = URI( 'https://foo/user/1' )
-request = Net::HTTP::Get.new( uri )
-
-... this is where you'd set up a POST or get according to the api specs, depending on what you want to do
-
-user_response = api.call(uri, request)
+`api\_caller = AlmaApi::Batch::ApiCaller.new( one_of_the_alma_sites','alma\_api\_key' )`
 
 
+The host will be the alma regional servers. For example, in North America use api-na.hosted.exlibrisgroup.com. See full list at [Alma's API Overview: Calling Alma Apis]( https://developers.exlibrisgroup.com/alma/apis/#structure,
 
 The key needs to be a key that has at least read permissions for whatever api you're going to try calling. The module right now doesn't necessarily check though.
 
 See [Alma's API Overview: Creating An Alma API Key]( https://developers.exlibrisgroup.com/alma/apis/#defining ) for detail son creating the api key 
 
-This needs to hae the following:
 
-```
----
-url_base: the hostname to connect (in North America, use api-na.hosted.exlibrisgroup.com)
-api_key: your_alma_key
+
+### Get
+
+    
+
+`api\_caller.get( path, query_parameters )`
+
+
+    * *path* - The path used by the Api docs, as specified in the documentation's tables in the path column
+    * *query_paramters* - Any query parameters used in the url.
+
+For example, the vendors api call is paged, so it only returns a limited number of results per call. You need to supply how many you want back (limit), with the upper range allowed being 100) and the row you want to start at (offset).
+
+
+`response = api_caller.get( '/almaws/v1/acq/vendors', { :offset => 300, :limit => 100 })`
+
+
+### Put
+
+`api\_caller.put( path, body_text, query_parameters )`
+
+    * *path* - The path used by the Api docs, as specified in the documentation's tables in the path column
+    * *body_text* - the body of the document to "put"
+    * *query_paramters* - Any query parameters used in the url.
+
+
+For example:
+`api_caller.put( '/almaws/v1/acq/vendors/wiley', '<vendor><vendor_name>Wiley</ven...</vendor>' )`
+
+
+
+### Post
+
+
+`api\_caller.post( path, body_text, query_parameters )`
+
+    * *path* - The path used by the Api docs, as specified in the documentation's tables in the path column
+    * *body_text* - the body of the document to "put"
+    * *query_paramters* - Any query parameters used in the url.
+
+For example, `api\_caller(  '/almaws/v1/acq/invoices','<invoice>....</invoice>')
 
 ```
 ## Development
