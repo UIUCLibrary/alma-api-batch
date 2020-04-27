@@ -52,12 +52,12 @@ class TestVerbs < Test::Unit::TestCase
     
     
       # set up webmock
-    stub = stub_request(:post, /https:\/\/null.library.illinois.edu\/some_api_base\/vendors\/0134.*/).
-             with(headers: { 'Authorization' => 'apkikey fake_api_key' },
+    stub = stub_request(:post, 'https://null.library.illinois.edu/some_api_base/vendors/0134').
+             with(headers: { 'Authorization' => 'apikey fake_api_key' },
                   body: body_doc)
     
     
-    @api.post('some_api_base/vendors', body_doc) 
+    @api.post('some_api_base/vendors/0134', body_doc) 
     
 
     assert_requested(stub)
@@ -72,12 +72,12 @@ class TestVerbs < Test::Unit::TestCase
     
     
     # set up webmock
-    stub = stub_request(:put, /https:\/\/null.library.illinois.edu\/some_api_base\/vendors\/0134.*/).
-             with(headers: { 'Authorization' => 'apkikey fake_api_key' },
+    stub = stub_request(:put, 'https://null.library.illinois.edu/some_api_base/vendors/0134').
+             with(headers: { 'Authorization' => 'apikey fake_api_key' },
                   body: body_doc)
     
     
-    @api.put('some_api_base/vendors', body_doc) 
+    @api.put('some_api_base/vendors/0134', body_doc) 
     
     
     assert_requested(stub)
