@@ -3,6 +3,7 @@ module AlmaApi
 
     require 'limiter'
     require 'nokogiri'
+    require 'net/http'
     
     # adding a gem just to track time and limit calls might
     # be overkill, can probably implement ourselves directly...
@@ -121,10 +122,16 @@ module AlmaApi
 
 
       def _uri( endpoint, query_options )
+
+
+        if endpoint[0] != '/'
+          endpoint = '/' + endpoint
+        end
+        
         
         # should we worry about double-escaping here?
         
-        uri = "https://#{@config[:host]}/#{endpoint}"
+        uri = "https://#{@config[:host]}#{endpoint}"
         
         # At some point need to research how alma tends to handle "array" of options...
         # and possibly do someting smart here
@@ -139,6 +146,9 @@ module AlmaApi
       end
       
       def get(endpoint, query_options = {})
+
+
+        
         uri = _uri( endpoint, query_options)
         request = Net::HTTP::Get.new( uri )
 
