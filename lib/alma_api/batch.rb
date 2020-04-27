@@ -118,6 +118,35 @@ module AlmaApi
         #       puts "Ok, got a response that wasn't throttled, going to return that"
         response
       end
+
+
+      def get(endpoint, query_options = {})
+        
+        # should we worry about double-escaping here?
+
+        uri = "https://#{@config[:host]}/#{endpoint}"
+
+        # At some point need to research how alma tends to handle "array" of options...
+        # and possibly do someting smart here
+        unless query_options.empty?
+          query = query_options.
+                    map{ |key,value| "#{key}=#{value}" }.
+                    join("&")
+          uri += "?#{query}"
+        end
+        
+        # Get Vendor	GET /almaws/v1/acq/vendors/{vendorCode}	 
+        uri = URI( URI.escape( uri ) )
+        
+        request = Net::HTTP::Get.new( uri )
+        response = call( uri, request )
+
+        response
+        
+      end
+      
+
     end
+
   end
 end

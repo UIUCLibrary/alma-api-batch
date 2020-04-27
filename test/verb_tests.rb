@@ -18,8 +18,8 @@ class TestVerbs < Test::Unit::TestCase
   
   def test_get
     
-    stub_get = stub_request(:get, /https:\/\/null.library.illinois.edu.*/).
-                 with(headers: { 'Authorize' => 'fake_api_key' })
+    stub_get = stub_request(:get, 'https://null.library.illinois.edu/vendors').
+                 with(headers: { 'Authorization' => 'apikey fake_api_key' })
     
     
     @api.get('vendors') 
@@ -32,10 +32,10 @@ class TestVerbs < Test::Unit::TestCase
   
   def test_get_wtih_query
     
-    stub_get = stub_request(:get, /https:\/\/null.library.illinois.edu.*/).
-                 with(headers: { 'Authorize' => 'fake_api_key' },
-                      query: {"offset" => ["300"],
-                              "limit" => ["100"]}) 
+    stub_get = stub_request(:get, 'https://null.library.illinois.edu/vendors').
+                 with(headers: { 'Authorization' => 'apikey fake_api_key' },
+                      query: {"offset" => "300",
+                              "limit" => "100"}) 
     
     
     # leads to good question...any query w/ parameters that are array in Alma api
@@ -53,7 +53,7 @@ class TestVerbs < Test::Unit::TestCase
     
       # set up webmock
     stub = stub_request(:post, /https:\/\/null.library.illinois.edu\/some_api_base\/vendors\/0134.*/).
-             with(headers: { 'Authorize' => 'fake_api_key' },
+             with(headers: { 'Authorization' => 'apkikey fake_api_key' },
                   body: body_doc)
     
     
@@ -73,7 +73,7 @@ class TestVerbs < Test::Unit::TestCase
     
     # set up webmock
     stub = stub_request(:put, /https:\/\/null.library.illinois.edu\/some_api_base\/vendors\/0134.*/).
-             with(headers: { 'Authorize' => 'fake_api_key' },
+             with(headers: { 'Authorization' => 'apkikey fake_api_key' },
                   body: body_doc)
     
     
