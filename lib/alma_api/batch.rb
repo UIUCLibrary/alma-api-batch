@@ -78,6 +78,30 @@ module AlmaApi
                                      :use_ssl => true) { | http |
             http.request( request )
           }
+
+          
+          if  response.is_a?  Net::HTTPRedirection
+            # so we'd need to clone the request, but then change
+            # the host...I think..for now I'm going to assume
+            # get request..
+
+            uri = _uri( response['location'])
+            request = Net::HTTP::Get.new( uri )
+            
+            
+            response = Net::HTTP.start(uri.host,
+                                       url.port,
+                                       :use_ssl => true) { | http |
+              http.request( request )
+            }
+          end
+          
+          
+          # so...apparently some calls can return redirects..
+          # we should think more about how we do this in the long run
+          # like looping for some amount of redirects, etc
+          # but for now, if redirect just try one more tiem
+
           
           raw_xml = response.body
                     
@@ -121,7 +145,7 @@ module AlmaApi
       end
 
 
-      def _uri( endpoint, query_options )
+      def _uri( endpoint, query_options = nil)
 
 
         if endpoint[0] != '/'
@@ -135,7 +159,7 @@ module AlmaApi
         
         # At some point need to research how alma tends to handle "array" of options...
         # and possibly do someting smart here
-        unless query_options.empty?
+        unless query_options.nil?
           query = query_options.
                     map{ |key,value| "#{key}=#{value}" }.
                     join("&")
@@ -154,6 +178,7 @@ module AlmaApi
 
 
         call( uri , request )
+        
       end
 
 
