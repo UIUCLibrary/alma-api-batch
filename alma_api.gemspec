@@ -9,18 +9,16 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Acts a wrapper around Alma's api and handles threshold exceeded errors as well as tries to apply reasonable threshold limits to calls.}
 #  spec.description   = %q{TODO: Write a longer description or delete this line.}
 
-  #TOD replace with public webpage when have one
-  spec.homepage      = "https://www.library.illinois.edu"
+  spec.homepage      = "https://github.com/UIUCLibrary/alma-api-batch"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   
   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  #TODO: replace w/ actual link when publish to github
-  spec.metadata["source_code_uri"] = "https://www.library.illinois.edu"
+  spec.metadata["source_code_uri"] = "https://github.com/UIUCLibrary/alma-api-batch"
   #TODO: Replace with changelog when exists
-  spec.metadata["changelog_uri"] = "https://www.library.illinois.edu"
+  spec.metadata["changelog_uri"] = "https://github.com/UIUCLibrary/alma-api-batch/blob/master/LICENSEhttps://github.com/UIUCLibrary/alma-api-batch/blob/master/changelog.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
