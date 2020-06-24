@@ -22,7 +22,7 @@ class TestAlmaBatchAPIRateLimits < Test::Unit::TestCase
     # but will test 30 times and if 29 get done in less
     # than a second, the rest of the tests are reasonable
 
-    api = AlmaApi::Batch::ApiCaller.new( 'fakekey' )
+    api = AlmaApi::Batch::ApiCaller.new( 'fakehost','fakekey' )
     
 
     mock_responses = (1..30).map { | position | { body: "<user><primary_id>#{position.to_s }</primary_id></user>" } }
@@ -56,7 +56,7 @@ class TestAlmaBatchAPIRateLimits < Test::Unit::TestCase
   
   def test_pauses_after_per_second_warning
     
-    api = AlmaApi::Batch::ApiCaller.new( 'fakekey'  )
+    api = AlmaApi::Batch::ApiCaller.new( 'fakehost','fakekey'  )
 
     # if we time out every five, we'll need to make sure we have 31, because WebMock repeats the last request
     # feels like better way to do this...
@@ -103,7 +103,7 @@ class TestAlmaBatchAPIRateLimits < Test::Unit::TestCase
   # we should avoid hitting the threshold if we can without warnings from Alma..
   def test_pauses_after_too_many_request_per_second
 
-    api = AlmaApi::Batch::ApiCaller.new( 'fakekey'  )
+    api = AlmaApi::Batch::ApiCaller.new( 'fakehost','fakekey'  )
 
     # if we time out every five, we'll need to make sure we have 31, because WebMock repeats the last request
     # feels like better way to do this...
@@ -144,7 +144,7 @@ class TestAlmaBatchAPIRateLimits < Test::Unit::TestCase
   
   def test_pauses_after_receiving_daily_threshold
 
-    api = AlmaApi::Batch::ApiCaller.new( 'fakekey' )
+    api = AlmaApi::Batch::ApiCaller.new( 'fakehost','fakekey' )
 
     # if we time out every five, we'll need to make sure we have 31, because WebMock repeats the last request
     # feels like better way to do this...
