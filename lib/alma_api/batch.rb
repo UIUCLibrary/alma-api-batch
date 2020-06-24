@@ -4,23 +4,46 @@ module AlmaApi
     require 'limiter'
     require 'nokogiri'
     require 'net/http'
+
+    require 'alma_api/error_response'
+
+    # could consider pulling this out into a separate file
+    # and then overriding the constructor, have it take in the error response
+    # and use that to produce the message
+    
+    class DailyThresholdMetError < StandardError ; end
+
+
     
     # adding a gem just to track time and limit calls might
     # be overkill, can probably implement ourselves directly...
     
     class ApiCaller
       extend Limiter::Mixin
+
+      DAILY_THRESHOLD_BEHAVIOR_WAIT  = 1
+      DAILY_THRESHOLD_BEHAVIOR_ERROR = 2
       
+      
+
       limit_method :call, rate: 19, interval: 1
       
 
 
       # do we want to make it an option hash?
       
-      def initialize(host, key)
+      def initialize(host, key, options = {})
+        if options.key?(:daily_threshold_behavior) and options[:daily_threshold_behavior] == DAILY_THRESHOLD_BEHAVIOR_WAIT
+          @daily_threshold_behavior = DAILY_THRESHOLD_BEHAVIOR_WAIT
+        else
+          # defaults to error for now
+
+          @daily_threshold_behavior = DAILY_THRESHOLD_BEHAVIOR_ERROR
+        end
+          
         @config = { host: host,
                     api_key: key }
-      end
+      end 
       
       def sleep_till_midnight
         
@@ -126,8 +149,26 @@ module AlmaApi
           # check for daily limit, sleep til midnight GMT if found
           if !xml.xpath( '/ae:web_service_result/ae:errorList/ae:error/ae:errorCode[contains(text(),"DAILY_THRESHOLD")]',
                          { 'ae' => "http://com/exlibris/urm/general/xmlbeans"} ).empty?
-            puts "Warning - reached daily limit for API, going to sleep"
-            sleep_till_midnight()
+            #puts "Warning - reached daily limit for API, going to sleep"
+            
+            if @daily_threshold_behavior == DAILY_THRESHOLD_BEHAVIOR_WAIT
+              puts "doing the wait behavior"
+              sleep_till_midnight()
+            else
+              puts "doing the raise behavior"
+              # consider moving this logic out into the Error class
+              error_msg = "Daily threshold limit has been reached for Alma Api calls"
+              
+              error_response = AlmaApi::ErrorResponse.new( xml )
+
+              error_response.error_list.each do | error_list_item |
+                error_msg += "\n Tracking Id: #{error_list_item[:traxocking_id]}, Code: #{error_list_item[:code]}, Message: #{error_list_item[:message] } \n"
+              end
+
+
+              raise DailyThresholdMetError.new( error_msg ) 
+            end
+              
             
           # check for second limit, sleep till next second if found. Don't need to check body, docs say this always returns 429 if it is triggered
           elsif response.code == '429'

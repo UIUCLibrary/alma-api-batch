@@ -173,7 +173,7 @@ class TestAlmaBatchAPIRateLimits < Test::Unit::TestCase
     # and 11th request should time out after 60 seconds...unless you're running this at 5:59pm Central or so
     request = Net::HTTP::Get.new( uri )
      
-    assert_raise( DailyThresholdMetError ) { api.call( uri, request  ) }
+    assert_raise( AlmaApi::Batch::DailyThresholdMetError ) { api.call( uri, request  ) }
     
   end
 
@@ -182,7 +182,7 @@ class TestAlmaBatchAPIRateLimits < Test::Unit::TestCase
 
     api = AlmaApi::Batch::ApiCaller.new( 'fakehost',
                                          'fakekey',
-                                         { daily_threshold_behavior: AlmaApi::Batch::WAIT } )
+                                         { daily_threshold_behavior: AlmaApi::Batch::ApiCaller::DAILY_THRESHOLD_BEHAVIOR_WAIT } )
                                          
 
     # if we time out every five, we'll need to make sure we have 31, because WebMock repeats the last request
@@ -213,7 +213,7 @@ class TestAlmaBatchAPIRateLimits < Test::Unit::TestCase
     request = Net::HTTP::Get.new( uri )
      
     assert_raise( Timeout::Error ) {
-      Timeout::timeout( 60 ) do
+      Timeout::timeout( 20 ) do
         api.call( uri, request  )
       end
     }
