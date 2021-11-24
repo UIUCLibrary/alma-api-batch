@@ -2,11 +2,20 @@
 
 This gem acts as a wrapper around the Alma APIs, enforcing rate limits as well as handling certain errors that can be returned from the API to indicate an overall temporary block due to aggregated institutional usage.  
 
-Since the rate limits are applied at the institution level and not at api key level, this module can be used to handle it if popularity of the apis gets higher.
+Since the rate limits are applied at the institution/consortium level and not at api key level, this module can be used to handle it if popularity of the apis gets higher.
 
 ## Installation
 
-See development for now
+  1. download from [Alma Api Batch on GitHub](https://github.com/UIUCLibrary/alma-api-batch1.
+  1. `cd alma-api-batch`
+  1. `gem build alma_api.gemspec`
+  1. `gem install alma_api-x.y.z.gem` 
+   
+## Use with Bundler 
+
+`gem 'alma_api', 'https://github.com/UIUCLibrary/alma-api-batch.git'`
+
+
 
 
 ## Usage
@@ -63,15 +72,13 @@ For example:
     * *body_text* - the body of the document to "put"
     * *query_paramters* - Any query parameters used in the url.
 
-For example, `api\_caller(  '/almaws/v1/acq/invoices','<invoice>....</invoice>')
+For example, `api\_caller(  '/almaws/v1/acq/invoices','<invoice>....</invoice>')`
 
-```
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Run `rake test` to run the tests. 
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
+To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Dependencies
 
@@ -83,9 +90,9 @@ Bug reports and pull requests are welcome.
 
 ## TODOS
 
-  * Add this gem to github, point to it in docs.
   * Add some higher-level functionality based on existing scripts usage of api calls
   * Have host be part of setup - See [Alma's API Overiew: Calling Alma APIs]( https://developers.exlibrisgroup.com/alma/apis/#calling ) for details on hostname.
+  * Add back in bin/console, or better instructions on using it
 
 
   
