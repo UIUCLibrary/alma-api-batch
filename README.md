@@ -20,9 +20,12 @@ Since the rate limits are applied at the institution/consortium level and not at
 
 ## Usage
 
-First, construct the caller object. This takes care of rate-limiting concners, both throttling and retrying the call if a response comes back that the threshold was exceeded. (Thresholds are per-institution, not api key, so even if everyone is being responsible they can still happen).
+Include `require 'alma_api/batch'` at the top of your script/file.
 
-`api\_caller = AlmaApi::Batch::ApiCaller.new( one_of_the_alma_sites','alma\_api\_key' )`
+
+Construct the caller object. This takes care of rate-limiting concerns, both throttling and retrying the call if a response comes back that the threshold was exceeded. (Thresholds are per-institution, not api key, so even if everyone is being responsible they can still happen).
+
+`api_caller = AlmaApi::Batch::ApiCaller.new( one_of_the_alma_sites','alma_api_key' )`
 
 
 The host will be the alma regional servers. For example, in North America use api-na.hosted.exlibrisgroup.com. See full list at [Alma's API Overview: Calling Alma Apis]( https://developers.exlibrisgroup.com/alma/apis/#structure,
@@ -37,7 +40,7 @@ See [Alma's API Overview: Creating An Alma API Key]( https://developers.exlibris
 
     
 
-`api\_caller.get( path, query_parameters )`
+`api_caller.get( path, query_parameters )`
 
 
     * *path* - The path used by the Api docs, as specified in the documentation's tables in the path column
@@ -51,7 +54,7 @@ For example, the vendors api call is paged, so it only returns a limited number 
 
 ### Put
 
-`api\_caller.put( path, body_text, query_parameters )`
+`api_caller.put( path, body_text, query_parameters )`
 
     * *path* - The path used by the Api docs, as specified in the documentation's tables in the path column
     * *body_text* - the body of the document to "put"
@@ -66,13 +69,13 @@ For example:
 ### Post
 
 
-`api\_caller.post( path, body_text, query_parameters )`
+`api_caller.post( path, body_text, query_parameters )`
 
     * *path* - The path used by the Api docs, as specified in the documentation's tables in the path column
     * *body_text* - the body of the document to "put"
     * *query_paramters* - Any query parameters used in the url.
 
-For example, `api\_caller(  '/almaws/v1/acq/invoices','<invoice>....</invoice>')`
+For example, `api_caller(  '/almaws/v1/acq/invoices','<invoice>....</invoice>')`
 
 ## Development
 
