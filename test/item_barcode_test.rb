@@ -15,6 +15,7 @@ class TestItembarcode < Test::Unit::TestCase
      @api = AlmaApi::Batch::ApiCaller.new(ENV['ALMA_HOST'], ENV['ALMA_API_KEY'])
   end
   def test_fetch_by_item_barcode
+    WebMock.allow_net_connect!
 
     fetch_response = @api.get('/almaws/v1/items',{ 'item_barcode' => '30112071950551' } )
 
@@ -25,7 +26,7 @@ class TestItembarcode < Test::Unit::TestCase
     # /item/bib_data/title
   
    
-
+    WebMock.disable_net_connect!
     
   end
 end

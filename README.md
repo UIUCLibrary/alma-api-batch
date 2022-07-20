@@ -79,6 +79,13 @@ For example, `api_caller(  '/almaws/v1/acq/invoices','<invoice>....</invoice>')`
 
 ## Development
 
+Before running tests, have the following environmental variables set:
+
+ALMA_API_KEY=to an alma api key that can read bibliographic info
+ALMA_HOST=api-na.hosted.exlibrisgroup.com
+
+(or set it to the host of your region, see [https://developers.exlibrisgroup.com/alma/apis/] for a list.
+
 Run `rake test` to run the tests. 
 
 To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
