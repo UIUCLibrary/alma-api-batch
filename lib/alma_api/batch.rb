@@ -6,6 +6,7 @@ module AlmaApi
     require 'net/http'
 
     require 'alma_api/error_response'
+    require 'addressable/uri'
 
     # could consider pulling this out into a separate file
     # and then overriding the constructor, have it take in the error response
@@ -207,7 +208,7 @@ module AlmaApi
           uri += "?#{query}"
         end
         
-        URI( URI.escape( uri ) )
+        URI( Addressable::URI.escape( uri ) )
       end
       
       def get(endpoint, query_options = {})
