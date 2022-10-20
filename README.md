@@ -13,10 +13,13 @@ Since the rate limits are applied at the institution/consortium level and not at
    
 ## Use with Bundler 
 
-`gem 'alma_api', 'https://github.com/UIUCLibrary/alma-api-batch.git'`
+Add the following to your Gemfile
 
+`gem 'alma_api', git: 'https://github.com/UIUCLibrary/alma-api-batch.git', branch: 'main'`
 
+and run 
 
+`bundle install`
 
 ## Usage
 
